@@ -7,7 +7,7 @@ Leandro Ardissone, http://iamlee.ch/
 from willie.module import rule
 from random import choice
 
-@rule('.*(hola|hi|buenas).*')
+@rule('^(hola|hi|buenas).*')
 def hi(bot, trigger):
     replies = [
         ('reply', u'hola, fagget!'),
