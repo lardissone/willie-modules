@@ -14,11 +14,8 @@ Leandro Ardissone, http://iamlee.ch/
 from willie.module import rule, priority, rate, commands
 from random import randint
 
-
-try:
-    from pymongo import MongoClient
-except ImportError:
-    bot.say('Install mongo lib: pip install mongo')
+# TODO: spit error instead of ImportError
+from pymongo import MongoClient
 
 
 @commands('addquote')
