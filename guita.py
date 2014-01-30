@@ -2,12 +2,10 @@
 """
 Comando de monedas
 
-Web services: http://www.eldolarblue.net/dolar-blue-web-services.php
-
 Gran parte choreado de pungabot por @reiven:
 https://github.com/reiven/pungabot/
 
-Requires: requests
+Requires: requests and BeautifulSoup4
 """
 
 import re
