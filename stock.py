@@ -7,6 +7,8 @@ Requires: requests
 
 import re
 import requests
+import StringIO
+import csv
 import willie
 
 
@@ -19,22 +21,27 @@ def stock(bot, input):
 
     symbol = symbol.strip()
 
-    query = "select * from yahoo.finance.quotes where symbol in ('%s')" % symbol
-    data = {'q': query, 'format': 'json', 'diagnostics': True, 'env': 'http://datatables.org/alltables.env'}
-    r = requests.get('http://query.yahooapis.com/v1/public/yql', params=data)
+    tags = 'nsac' # 'kqwxyr1l9t5p4'
+    url = 'http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s' % (symbol, tags)
 
+    r = requests.get(url)
     if r.status_code == 200:
-        response = r.json()
+        f = StringIO.StringIO(r.text)
+        reader = csv.reader(f)
 
-        if response['query']['count'] > 0:
-            bot.say('[%s]: $%s' % (
-                response['query']['results']['quote']['symbol'],
-                response['query']['results']['quote']['LastTradePriceOnly']
+        result = list(reader)[0]
+
+        if result[2] != 'N/A':
+            bot.say('%s (%s): $%s (%s)' % (
+                result[0],
+                result[1],
+                result[2],
+                result[3]
             ))
         else:
-            bot.reply('estas seguro que existe el symbol "%s"' % symbol)
+            bot.reply('nope, no tenemos de eso')
     else:
-        bot.reply('algo no anduvo, vaya a laburar...')
+        bot.reply('algo no anduvo, anda a laburar...')
 
 stock.commands = ['stock']
 stock.example = ".stock GOOG"
